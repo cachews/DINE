@@ -113,16 +113,16 @@ class Loader(Dataset):
 
         item_dict = {
             "series_id": series_id,
-            "seq_x": torch.tensor(seq_x).unsqueeze(-1),  # [seq_len, 1]
-            "seq_y": torch.tensor(seq_y).unsqueeze(-1),  # [pred_len, 1]
+            "seq_x": torch.tensor(seq_x, dtype=torch.float32).unsqueeze(-1),  # [seq_len, 1]
+            "seq_y": torch.tensor(seq_y, dtype=torch.float32).unsqueeze(-1),  # [pred_len, 1]
         }
 
         if self.features > 0:
             seq_x_features = self.data_features[series_id, start_idx:start_idx + self.seq_len]
             seq_y_features = self.data_features[series_id, start_idx + self.seq_len:start_idx + self.seq_len + self.pred_len]
             
-            item_dict["seq_x_features"] = torch.tensor(seq_x_features) # [seq_len, F]
-            item_dict["seq_y_features"] = torch.tensor(seq_y_features) # [pred_len, F]
+            item_dict["seq_x_features"] = torch.tensor(seq_x_features, dtype=torch.float32) # [seq_len, F]
+            item_dict["seq_y_features"] = torch.tensor(seq_y_features, dtype=torch.float32) # [pred_len, F]
             
 
         return item_dict

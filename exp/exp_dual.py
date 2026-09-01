@@ -103,6 +103,7 @@ class Exp_Dual(Exp_Basic):
 
                 if self.args.use_amp:
                     scaler.scale(loss).backward()
+                    scaler.unscale_(optimizer)
                     torch.nn.utils.clip_grad_norm_(self.model.parameters(), 1.0)
                     scaler.step(optimizer)
                     scaler.update()
