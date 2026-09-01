@@ -13,9 +13,9 @@ python -u run.py \
     --feature_separating_periods \
     --feature_successive_zero_periods \
     --filter_intermittent_lumpy \
-    --batch_size 128 \
-    --train_epochs 25 \
-    --patience 5 \
+    --batch_size 64 \
+    --train_epochs 300 \
+    --patience 50 \
     --loss MSE \
     --bce_use_weight \
     --dual_demand_loss_weight \

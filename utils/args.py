@@ -38,8 +38,8 @@ def parse_args(defaults=None):
     parser.add_argument("--pred_len", type=int, default=1, help="output prediction length")
 
     # model definition
-    parser.add_argument("--d_model", type=int, default=256, help="model size")
-    parser.add_argument("--e_layers", type=int, default=2, help="encoder layers")
+    parser.add_argument("--d_model", type=int, default=128, help="model size")
+    parser.add_argument("--e_layers", type=int, default=1, help="encoder layers")
     parser.add_argument("--n_heads", type=int, default=8, help="num of transformer heads")
     parser.add_argument("--occurrence_branch_residual", action="store_true", help="use residual connection in occurrence branch")
     parser.add_argument("--size_branch_residual", action="store_true", help="use residual connection in size branch")
@@ -48,17 +48,17 @@ def parse_args(defaults=None):
     parser.add_argument("--weight_decay", type=float, default=0.01, help="weight decay for optimizer")
 
     # optimisation
-    parser.add_argument("--batch_size", type=int, default=128, help="batch size of train input data")
-    parser.add_argument("--train_epochs", type=int, default=25, help="train epochs")
-    parser.add_argument("--learning_rate", type=float, default=0.0001, help="optimizer learning rate")
+    parser.add_argument("--batch_size", type=int, default=64, help="batch size of train input data")
+    parser.add_argument("--train_epochs", type=int, default=300, help="train epochs")
+    parser.add_argument("--learning_rate", type=float, default=0.0005, help="optimizer learning rate")
     parser.add_argument("--lr_scheduler", type=str, default="cosine", help="learning rate scheduler: type1, cosine")
-    parser.add_argument("--patience", type=int, default=5, help="early stopping patience")
+    parser.add_argument("--patience", type=int, default=50, help="early stopping patience")
     parser.add_argument("--loss", type=str, default="MAE", help="loss function")
     parser.add_argument("--label_smoothing", type=float, default=0, help="label smoothing for occurrence branch")
     parser.add_argument("--dropout", type=float, default=0.1, help="dropout rate")
     parser.add_argument("--bce_use_weight", action="store_true", help="use positive weight for BCE loss")
     parser.add_argument("--dual_demand_loss_weight", action="store_true", help="use dual loss weight for demand branch")
-    parser.add_argument("--dual_demand_loss_weight_multiplier", type=float, default=1.0, help="multiplier for dual demand loss weight")
+    parser.add_argument("--dual_demand_loss_weight_multiplier", type=float, default=0.5, help="multiplier for dual demand loss weight")
 
     # plotting
     parser.add_argument("--test_to_plot", type=int, default=50, help="number of random series to plot from test set")
