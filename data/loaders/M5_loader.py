@@ -70,8 +70,17 @@ class Loader(Dataset):
                 continue
             
             self.used_series_ids.append(series_id)
-            for series_idx in range(split_start, split_end - self.seq_len - self.pred_len + 1):
-                self.indices.append((series_id, series_idx))
+            if split != "train":
+                available_starts = list(range(split_start, split_end - self.seq_len - self.pred_len + 1))
+                if split == "vali":
+                    k = min(self.args.vali_windows, len(available_starts))
+                    rng = np.random.RandomState(seed=args.seed + series_id)
+                    selected_starts = rng.choice(available_starts, size=k, replace=False)
+                    for series_idx in selected_starts:
+                        self.indices.append((series_id, series_idx))
+                else:
+                    for series_idx in available_starts:
+                        self.indices.append((series_id, series_idx))
 
         self.data_features, self.features = generate_features(self.data, self.args) # [N, L, F]
 
@@ -101,11 +110,22 @@ class Loader(Dataset):
         self.demand_weight = (self.data[:, :self.data_train_end].size / np.sum(self.data[:, :self.data_train_end] != 0)) * self.args.dual_demand_loss_weight_multiplier
 
     def __len__(self):
+        if self.split == "train":
+            return len(self.used_series_ids)
         return len(self.indices)
 
     def __getitem__(self, idx):
-        series_id, start_idx = self.indices[idx]
-        start_idx += self.data_starts[series_id]
+        if self.split == "train":
+            series_id = self.used_series_ids[idx]
+            start_min = self.data_starts[series_id]
+            start_max = self.data_train_end - self.seq_len - self.pred_len - self.multi_horizon_tail_cut
+
+            start_idx = np.random.randint(start_min, start_max + 1)
+
+        else:
+            series_id, start_idx = self.indices[idx]
+            start_idx += self.data_starts[series_id]
+
         series = self.data[series_id]
 
         seq_x = series[start_idx:start_idx + self.seq_len]

@@ -25,6 +25,7 @@ def parse_args(defaults=None):
     parser.add_argument("--num_workers", type=int, default=0, help="number of workers for data loader")
     parser.add_argument("--vali_points", type=int, default=300, help="number of points from series tail for validation set")
     parser.add_argument("--test_points", type=int, default=300, help="number of points from series tail for testing set")
+    parser.add_argument("--vali_windows", type=int, default=10, help="number of validation windows per series")
     parser.add_argument("--scale_type", type=str, default="none", help="scaling type: none, log1p")
     parser.add_argument("--trim_leading_zeros", action="store_true", help="trim leading zeros from the series")
     parser.add_argument("--filter_intermittent_lumpy", action="store_true", help="keep only intermittent and lumpy series")
